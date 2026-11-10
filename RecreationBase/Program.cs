@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using RecreationBase.Data;
 using RecreationBase.Models;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
@@ -57,11 +58,10 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-// Применяем миграции при старте — удобно для учебного проекта.
+// Применяем миграции и наполняем базу домиками/администратором — удобно для учебного проекта.
 using (var scope = app.Services.CreateScope())
 {
-    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    db.Database.Migrate();
+    await DbSeeder.SeedAsync(scope.ServiceProvider, app.Configuration);
 }
 
 app.Run();

@@ -1,0 +1,18 @@
+@{
+    var controller = ViewContext.RouteData.Values["controller"]?.ToString();
+    var action = ViewContext.RouteData.Values["action"]?.ToString();
+    string TabClass(string a) => controller == "Admin" && (a == "Index" ? action == "Index" : action.StartsWith(a))
+        ? "is-active" : "";
+}
+
+<nav class="admin-tabs">
+    <a class="@TabClass("Index")" asp-controller="Admin" asp-action="Index">Сводка</a>
+    <a class="@TabClass("Bookings")" asp-controller="Admin" asp-action="Bookings">Заявки</a>
+    <a class="@TabClass("Cabins")" asp-controller="Admin" asp-action="Cabins">Домики</a>
+    <a class="@TabClass("Users")" asp-controller="Admin" asp-action="Users">Пользователи</a>
+</nav>
+
+@if (TempData["AdminMessage"] is string message)
+{
+    <p class="admin-note">@message</p>
+}

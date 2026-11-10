@@ -8,7 +8,7 @@
     <div class="hero__copy">
         <p class="kicker kicker--light">База отдыха</p>
         <h1>Тишина<br><em>на берегу.</em></h1>
-        <a class="book" asp-controller="Home" asp-action="Booking">Забронировать</a>
+        <a class="book" asp-controller="Booking" asp-action="Index">Забронировать</a>
     </div>
     <p class="hero__meta">Озеро · север</p>
 </section>
@@ -92,18 +92,14 @@
     <div>
         <p class="kicker">04 — Бронь</p>
         <h2>Выберите день.</h2>
-        <form class="visit-form" asp-controller="Home" asp-action="Booking" method="get">
+        <form class="visit-form" asp-controller="Booking" asp-action="Index" method="get">
             <label>
-                Дата
-                <input name="date" type="date" />
+                Заезд
+                <input name="checkIn" type="date" />
             </label>
             <label>
-                Время
-                <input name="time" type="time" />
-            </label>
-            <label class="check">
-                <input name="sauna" type="checkbox" value="1" />
-                Добавить баню
+                Выезд
+                <input name="checkOut" type="date" />
             </label>
             <button class="book book--ink" type="submit">К бронированию</button>
         </form>

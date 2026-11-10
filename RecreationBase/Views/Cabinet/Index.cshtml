@@ -1,18 +1,50 @@
-@model ApplicationUser
+@model List<BookingRecord>
 @{
     ViewData["Title"] = "Личный кабинет";
+
+    string StatusText(BookingStatus s) => s switch
+    {
+        BookingStatus.New => "Новая",
+        BookingStatus.Confirmed => "Подтверждена",
+        BookingStatus.Cancelled => "Отменена",
+        _ => "Завершена"
+    };
 }
 
 <section class="page">
     <p class="kicker">Личный кабинет</p>
-    <h1 style="font-family:var(--serif);font-weight:500;font-size:clamp(3.2rem,6vw,5.5rem);letter-spacing:-0.03em;line-height:0.92">@Model.FullName</h1>
+    <h1 style="font-family:var(--serif);font-weight:500;font-size:clamp(3.2rem,6vw,5.5rem);letter-spacing:-0.03em;line-height:0.92">@ViewBag.User.FullName</h1>
     <div class="profile">
-        <div><span>Email</span><strong>@Model.Email</strong></div>
-        <div><span>Телефон</span><strong>@(string.IsNullOrWhiteSpace(Model.PhoneNumber) ? "не указан" : Model.PhoneNumber)</strong></div>
+        <div><span>Email</span><strong>@ViewBag.User.Email</strong></div>
+        <div><span>Телефон</span><strong>@(string.IsNullOrWhiteSpace((string)ViewBag.User.PhoneNumber) ? "не указан" : (string)ViewBag.User.PhoneNumber)</strong></div>
     </div>
-    <h2 style="margin-top:3.5rem;font-size:clamp(2.4rem,4vw,3.4rem)">Бронирования</h2>
-    <p class="empty">Пока заявок нет. Когда сохранение бронирований будет готово, они появятся здесь.</p>
+
+    <h2 style="margin-top:3.5rem;font-size:clamp(2.4rem,4vw,3.4rem)">Мои бронирования</h2>
+
+    @if (Model.Count == 0)
+    {
+        <p class="empty">Заявок пока нет. Оформите бронь — она появится здесь со статусом.</p>
+    }
+    else
+    {
+        <div class="my-bookings">
+            @foreach (var b in Model)
+            {
+                <article class="my-booking">
+                    <div class="my-booking__head">
+                        <h3>@b.Cabin?.Name</h3>
+                        <span class="status status--@((int)b.Status)">@StatusText(b.Status)</span>
+                    </div>
+                    <p class="my-booking__dates">
+                        @b.CheckIn.ToString("dd.MM.yyyy") — @b.CheckOut.ToString("dd.MM.yyyy") · @b.Nights ноч. · @b.Guests гост.
+                    </p>
+                    <p class="my-booking__price">@b.TotalPrice.ToString("N0") ₽</p>
+                </article>
+            }
+        </div>
+    }
+
     <p style="margin-top:1.6rem">
-        <a class="book book--ink" asp-controller="Home" asp-action="Booking">К бронированию</a>
+        <a class="book book--ink" asp-controller="Booking" asp-action="Index">К бронированию</a>
     </p>
 </section>

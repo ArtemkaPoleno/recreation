@@ -1,0 +1,211 @@
+@model BookingFormViewModel
+@{
+    ViewData["Title"] = "Бронирование";
+}
+
+<section class="page-hero">
+    <img src="~/images/dock.jpg" alt="Озеро и пирс у базы" />
+    <div class="page-hero__shade" aria-hidden="true"></div>
+    <div class="page-hero__copy">
+        <p class="kicker kicker--light">Бронирование</p>
+        <h1>Выберите<br><em>удобное время.</em></h1>
+    </div>
+</section>
+
+<section class="page">
+    <div class="sheet">
+        <div>
+            <p class="kicker">Заявка</p>
+            <h2>Одна форма — и место ваше.</h2>
+            <p>Заявка сохраняется в базе. Администратор подтвердит её и свяжется с вами по телефону.</p>
+
+            <form asp-controller="Booking" asp-action="Index" method="post" class="form-stack" id="booking-form">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+
+                <div class="field">
+                    <label asp-for="CabinId"></label>
+                    <select asp-for="CabinId" id="cabin-select"
+                            asp-items="@(new SelectList(Model.Cabins, nameof(Cabin.Id), nameof(Cabin.Name)))">
+                        <option value="" disabled>Выберите домик</option>
+                    </select>
+                    <span asp-validation-for="CabinId" class="field-validation-error"></span>
+                </div>
+
+                <div class="booking-cabins">
+                    @foreach (var cabin in Model.Cabins)
+                    {
+                        <button type="button" class="booking-cabin @(cabin.Id == Model.CabinId ? "is-selected" : "")"
+                                data-id="@cabin.Id" data-capacity="@cabin.Capacity">
+                            <img src="@cabin.ImageUrl" alt="@cabin.Name" onerror="this.style.visibility='hidden'" />
+                            <span class="booking-cabin__body">
+                                <strong>@cabin.Name</strong>
+                                <em>@cabin.Capacity гостя · @cabin.PricePerNight.ToString("N0") ₽ / ночь</em>
+                            </span>
+                        </button>
+                    }
+                </div>
+
+                <div class="booking-dates">
+                    <div class="field">
+                        <label asp-for="CheckIn"></label>
+                        <input asp-for="CheckIn" id="check-in" type="date" min="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                        <span asp-validation-for="CheckIn" class="field-validation-error"></span>
+                    </div>
+                    <div class="field">
+                        <label asp-for="CheckOut"></label>
+                        <input asp-for="CheckOut" id="check-out" type="date" min="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")" />
+                        <span asp-validation-for="CheckOut" class="field-validation-error"></span>
+                    </div>
+                </div>
+
+                <p class="booking-hint" id="busy-hint" hidden>На выбранные даты домик занят — есть другие окна, подсказали ниже.</p>
+
+                <div class="field">
+                    <label asp-for="Guests"></label>
+                    <input asp-for="Guests" id="guests" type="number" min="1" max="30" />
+                    <span asp-validation-for="Guests" class="field-validation-error"></span>
+                </div>
+
+                <div class="field">
+                    <label asp-for="GuestName"></label>
+                    <input asp-for="GuestName" autocomplete="name" />
+                    <span asp-validation-for="GuestName" class="field-validation-error"></span>
+                </div>
+
+                <div class="field">
+                    <label asp-for="Phone"></label>
+                    <input asp-for="Phone" type="tel" placeholder="+7 900 000 00 00" autocomplete="tel" />
+                    <span asp-validation-for="Phone" class="field-validation-error"></span>
+                </div>
+
+                <div class="field">
+                    <label asp-for="Email"></label>
+                    <input asp-for="Email" autocomplete="email" />
+                    <span asp-validation-for="Email" class="field-validation-error"></span>
+                </div>
+
+                <div class="booking-extras">
+                    <label class="field-check">
+                        <input asp-for="NeedSauna" /> Баня
+                    </label>
+                    <label class="field-check">
+                        <input asp-for="NeedGear" /> Инвентарь
+                    </label>
+                    <label class="field-check">
+                        <input asp-for="NeedFood" /> Питание
+                    </label>
+                </div>
+
+                <div class="field">
+                    <label asp-for="Comment"></label>
+                    <textarea asp-for="Comment" rows="3" placeholder="Пожелания к заезду"></textarea>
+                    <span asp-validation-for="Comment" class="field-validation-error"></span>
+                </div>
+
+                <div class="booking-total">
+                    <span>Итого</span>
+                    <strong id="total">— ₽</strong>
+                </div>
+
+                <button class="book book--ink" type="submit">Забронировать</button>
+            </form>
+        </div>
+
+        <figure class="sheet__photo">
+            <img src="~/images/cabins.jpg" alt="Домики, которые можно забронировать" />
+            <figcaption>Домик на площадке</figcaption>
+        </figure>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        (function () {
+            const form = document.getElementById('booking-form');
+            if (!form) return;
+
+            const select = document.getElementById('cabin-select');
+            const checkIn = document.getElementById('check-in');
+            const checkOut = document.getElementById('check-out');
+            const guests = document.getElementById('guests');
+            const totalEl = document.getElementById('total');
+            const hint = document.getElementById('busy-hint');
+            const cards = Array.from(document.querySelectorAll('.booking-cabin'));
+
+            const cabins = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(
+                Model.Cabins.Select(c => new { id = c.Id, price = (double)c.PricePerNight, capacity = c.Capacity })));
+
+            let takenRanges = [];
+
+            function selectedCabin() {
+                return cabins.find(c => c.id === Number(select.value)) || null;
+            }
+
+            function nights() {
+                const a = new Date(checkIn.value), b = new Date(checkOut.value);
+                if (isNaN(a) || isNaN(b)) return 0;
+                return Math.max(0, Math.round((b - a) / 86400000));
+            }
+
+            function updateTotal() {
+                const c = selectedCabin(), n = nights();
+                totalEl.textContent = c && n > 0 ? (c.price * n).toLocaleString('ru-RU') + ' ₽' : '— ₽';
+            }
+
+            function markBusyDates() {
+                const c = selectedCabin();
+                cards.forEach(card => card.classList.toggle('is-selected', c && card.dataset.id === String(c.id)));
+                if (!c) return;
+
+                // Подсветка интервалов занятости прямо в нативных date-полях ограничена,
+                // поэтому показываем подсказку, если даты пересекаются с занятыми.
+                const from = new Date(checkIn.value), to = new Date(checkOut.value);
+                const busy = takenRanges.some(r => r.from < to && r.to > from);
+                hint.hidden = !busy;
+            }
+
+            function loadAvailability() {
+                const c = selectedCabin();
+                if (!c) { takenRanges = []; markBusyDates(); return; }
+                fetch('@Url.Action("AvailableDates", "Booking")?cabinId=' + c.id)
+                    .then(r => r.ok ? r.json() : [])
+                    .then(data => { takenRanges = data; markBusyDates(); });
+            }
+
+            select.addEventListener('change', () => {
+                const c = selectedCabin();
+                if (c) {
+                    guests.max = c.capacity;
+                    if (Number(guests.value) > c.capacity) guests.value = c.capacity;
+                }
+                updateTotal();
+                loadAvailability();
+            });
+
+            cards.forEach(card => card.addEventListener('click', () => {
+                select.value = card.dataset.id;
+                select.dispatchEvent(new Event('change'));
+            }));
+
+            [checkIn, checkOut].forEach(input => input.addEventListener('change', () => {
+                if (checkIn.value && checkOut.value <= checkIn.value) {
+                    const d = new Date(checkIn.value);
+                    d.setDate(d.getDate() + 1);
+                    checkOut.value = d.toISOString().slice(0, 10);
+                }
+                checkOut.min = checkIn.value;
+                updateTotal();
+                markBusyDates();
+            }));
+
+            if (select.value) {
+                const c = selectedCabin();
+                if (c) guests.max = c.capacity;
+                loadAvailability();
+            }
+            updateTotal();
+        })();
+    </script>
+}

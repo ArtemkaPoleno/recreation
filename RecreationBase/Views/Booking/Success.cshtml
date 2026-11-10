@@ -1,0 +1,35 @@
+@model BookingRecord
+@{
+    ViewData["Title"] = "Заявка принята";
+
+    var extras = new[]
+        {
+            Model.NeedSauna ? "баня" : null,
+            Model.NeedGear ? "инвентарь" : null,
+            Model.NeedFood ? "питание" : null
+        }
+        .Where(x => x != null)
+        .ToList();
+}
+
+<section class="page">
+    <div class="booking-success">
+        <p class="kicker">Бронирование</p>
+        <h1>Заявка №@Model.Id принята.</h1>
+        <p class="note">Спасибо, @Model.GuestName! Администратор подтвердит бронь и свяжется с вами по телефону @Model.Phone.</p>
+
+        <div class="profile">
+            <div><span>Домик</span><strong>@Model.Cabin?.Name</strong></div>
+            <div><span>Заезд — выезд</span><strong>@Model.CheckIn.ToString("dd.MM.yyyy") — @Model.CheckOut.ToString("dd.MM.yyyy") (@Model.Nights ноч.)</strong></div>
+            <div><span>Гостей</span><strong>@Model.Guests</strong></div>
+            <div><span>Дополнительно</span><strong>@(extras.Count > 0 ? string.Join(", ", extras) : "—")</strong></div>
+            <div><span>Статус</span><strong>Новая заявка</strong></div>
+            <div><span>Сумма</span><strong>@Model.TotalPrice.ToString("N0") ₽</strong></div>
+        </div>
+
+        <div class="booking-success__actions">
+            <a class="book book--ink" asp-controller="Home" asp-action="Index">На главную</a>
+            <a class="book book--line" asp-controller="Cabinet" asp-action="Index">В личный кабинет</a>
+        </div>
+    </div>
+</section>

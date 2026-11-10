@@ -1,0 +1,65 @@
+@model List<Cabin>
+@{
+    ViewData["Title"] = "Домики — админка";
+}
+
+<section class="page">
+    <p class="kicker">Администрирование</p>
+    <h1 style="font-family:var(--serif);font-weight:500;font-size:clamp(3rem,5.5vw,4.8rem);letter-spacing:-0.03em;line-height:0.95">Домики</h1>
+
+    <partial name="_AdminNav" />
+
+    <p style="margin-bottom:2rem">
+        <a class="book book--ink" asp-action="CabinEdit">Добавить домик</a>
+    </p>
+
+    @if (Model.Count == 0)
+    {
+        <p class="empty">Домиков пока нет — добавьте первый.</p>
+    }
+    else
+    {
+        <div class="table-wrap">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Название</th>
+                        <th>Вместимость</th>
+                        <th>Цена / ночь</th>
+                        <th>На сайте</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var c in Model)
+                    {
+                        <tr>
+                            <td>
+                                @c.Name
+                                @if (!string.IsNullOrWhiteSpace(c.Description))
+                                {
+                                    <em class="table-sub">@c.Description</em>
+                                }
+                            </td>
+                            <td>@c.Capacity гост.</td>
+                            <td>@c.PricePerNight.ToString("N0") ₽</td>
+                            <td>
+                                <span class="status @(c.IsActive ? "status--on" : "status--off")">
+                                    @(c.IsActive ? "да" : "скрыт")
+                                </span>
+                            </td>
+                            <td class="table-actions">
+                                <a class="table-link" asp-action="CabinEdit" asp-route-id="@c.Id">Изменить</a>
+                                <form method="post" asp-action="CabinDelete" onsubmit="return confirm('Удалить домик «@c.Name»?');" class="inline-form">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@c.Id" />
+                                    <button type="submit" class="table-link table-link--bad">Удалить</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</section>
