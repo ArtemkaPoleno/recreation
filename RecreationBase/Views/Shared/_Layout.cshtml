@@ -1,0 +1,81 @@
+﻿@{
+    var controller = ViewContext.RouteData.Values["controller"]?.ToString();
+    var action = ViewContext.RouteData.Values["action"]?.ToString();
+    string NavClass(string c, string a) => controller == c && action == a ? "is-active" : "";
+}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] — Кочевня</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <header class="site-header">
+        <partial name="_Brand" />
+
+        <div class="header-panel">
+            <nav class="site-nav">
+                <a class="@NavClass("Home", "About")" asp-controller="Home" asp-action="About">О базе</a>
+                <a class="@NavClass("Home", "Services")" asp-controller="Home" asp-action="Services">Услуги</a>
+                <a class="@NavClass("Home", "Booking")" asp-controller="Home" asp-action="Booking">Бронирование</a>
+                <a class="@NavClass("Home", "Reviews")" asp-controller="Home" asp-action="Reviews">Отзывы</a>
+                <a class="@NavClass("Home", "Contacts")" asp-controller="Home" asp-action="Contacts">Контакты</a>
+                <a class="@(controller == "Cabinet" ? "is-active" : "")" asp-controller="Cabinet" asp-action="Index">Кабинет</a>
+            </nav>
+
+            <div class="header-side">
+                <a class="header-call" href="tel:+79001234567">Позвонить</a>
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <form asp-controller="Account" asp-action="Logout" method="post" class="inline-form">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="header-link">Выйти</button>
+                    </form>
+                }
+                else
+                {
+                    <a class="header-link @(controller == "Account" && action == "Login" ? "is-active" : "")" asp-controller="Account" asp-action="Login">Войти</a>
+                }
+            </div>
+        </div>
+    </header>
+
+    <main>
+        @RenderBody()
+    </main>
+
+    <footer class="site-footer">
+        <div class="frame site-footer__grid">
+            <div>
+                <partial name="_Brand" />
+                <p>База отдыха у воды.</p>
+            </div>
+            <div>
+                <p class="footer-title">Разделы</p>
+                <a asp-controller="Home" asp-action="About">О базе</a>
+                <a asp-controller="Home" asp-action="Services">Услуги</a>
+                <a asp-controller="Home" asp-action="Booking">Бронирование</a>
+                <a asp-controller="Home" asp-action="Reviews">Отзывы</a>
+            </div>
+            <div>
+                <p class="footer-title">Связь</p>
+                <a href="tel:+79001234567">+7 900 123 45 67</a>
+                <a href="mailto:hello@kochevnya.ru">hello@kochevnya.ru</a>
+                <p>Лесной край, берег озера</p>
+            </div>
+        </div>
+        <div class="frame site-footer__bottom">
+            <span>© 2026 База отдыха «Кочевня»</span>
+            <span>Учебный проект</span>
+        </div>
+    </footer>
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

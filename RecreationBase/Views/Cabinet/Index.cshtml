@@ -1,0 +1,18 @@
+@model ApplicationUser
+@{
+    ViewData["Title"] = "Личный кабинет";
+}
+
+<section class="page">
+    <p class="kicker">Личный кабинет</p>
+    <h1 style="font-family:var(--serif);font-weight:500;font-size:clamp(3.2rem,6vw,5.5rem);letter-spacing:-0.03em;line-height:0.92">@Model.FullName</h1>
+    <div class="profile">
+        <div><span>Email</span><strong>@Model.Email</strong></div>
+        <div><span>Телефон</span><strong>@(string.IsNullOrWhiteSpace(Model.PhoneNumber) ? "не указан" : Model.PhoneNumber)</strong></div>
+    </div>
+    <h2 style="margin-top:3.5rem;font-size:clamp(2.4rem,4vw,3.4rem)">Бронирования</h2>
+    <p class="empty">Пока заявок нет. Когда сохранение бронирований будет готово, они появятся здесь.</p>
+    <p style="margin-top:1.6rem">
+        <a class="book book--ink" asp-controller="Home" asp-action="Booking">К бронированию</a>
+    </p>
+</section>

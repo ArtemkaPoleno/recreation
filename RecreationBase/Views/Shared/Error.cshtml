@@ -1,0 +1,17 @@
+﻿@model ErrorViewModel
+@{
+    ViewData["Title"] = "Ошибка";
+}
+
+<section class="page">
+    <p class="kicker">Ошибка</p>
+    <h1 style="font-family:var(--serif);font-weight:500;font-size:clamp(3.2rem,6vw,5.5rem);letter-spacing:-0.03em;line-height:0.92">Что-то<br>пошло не так.</h1>
+    <p class="note">Вернитесь на главную и повторите действие.</p>
+    @if (Model.ShowRequestId)
+    {
+        <p class="note"><strong>Request ID:</strong> <code>@Model.RequestId</code></p>
+    }
+    <p style="margin-top:1.6rem">
+        <a class="book book--ink" asp-controller="Home" asp-action="Index">На главную</a>
+    </p>
+</section>

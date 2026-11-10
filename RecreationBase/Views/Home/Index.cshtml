@@ -1,0 +1,117 @@
+﻿@{
+    ViewData["Title"] = "Главная";
+}
+
+<section class="hero">
+    <img src="~/images/territory.jpg" alt="Домики базы отдыха среди леса" />
+    <div class="hero__shade" aria-hidden="true"></div>
+    <div class="hero__copy">
+        <p class="kicker kicker--light">База отдыха</p>
+        <h1>Тишина<br><em>на берегу.</em></h1>
+        <a class="book" asp-controller="Home" asp-action="Booking">Забронировать</a>
+    </div>
+    <p class="hero__meta">Озеро · север</p>
+</section>
+
+<section class="chapter">
+    <div class="chapter__text">
+        <p class="kicker">01 — О базе</p>
+        <h2>Дом у воды, а не турбаза.</h2>
+        <p>Несколько домиков, длинный свет и берег, где ничего не нужно успевать. «Кочевня» — спокойное место без лишней программы.</p>
+        <a class="text-link" asp-controller="Home" asp-action="About">О базе</a>
+    </div>
+    <figure class="chapter__media">
+        <img src="~/images/cabins.jpg" alt="Два тёмных домика на площадке" />
+        <figcaption>Домики</figcaption>
+    </figure>
+</section>
+
+<section class="stay">
+    <div class="stay__layout">
+        <div>
+            <p class="kicker">02 — Услуги</p>
+            <h2>Мало. И по делу.</h2>
+            <ol class="lines">
+                <li>
+                    <span>01</span>
+                    <div>
+                        <h3>Проживание</h3>
+                        <p>Домики у воды, терраса, свой ритм.</p>
+                    </div>
+                    <a asp-controller="Home" asp-action="Services">Дальше</a>
+                </li>
+                <li>
+                    <span>02</span>
+                    <div>
+                        <h3>Баня</h3>
+                        <p>Короткий сеанс после прогулки.</p>
+                    </div>
+                    <a asp-controller="Home" asp-action="Services">Дальше</a>
+                </li>
+                <li>
+                    <span>03</span>
+                    <div>
+                        <h3>Инвентарь</h3>
+                        <p>Лодка, мангал, только нужное.</p>
+                    </div>
+                    <a asp-controller="Home" asp-action="Services">Дальше</a>
+                </li>
+                <li>
+                    <span>04</span>
+                    <div>
+                        <h3>Питание</h3>
+                        <p>По запросу, без шведского стола.</p>
+                    </div>
+                    <a asp-controller="Home" asp-action="Services">Дальше</a>
+                </li>
+            </ol>
+        </div>
+        <figure>
+            <img src="~/images/path.jpg" alt="Деревянная тропа между соснами к домикам" />
+        </figure>
+    </div>
+</section>
+
+<section class="band">
+    <img src="~/images/dock.jpg" alt="Деревянный пирс на озере" />
+    <p class="band__caption">Пирс у озера</p>
+</section>
+
+<section class="quote">
+    <div class="frame">
+        <p class="kicker">03 — Гости</p>
+        <blockquote>
+            «Тихо, чисто и очень спокойно. Вернёмся осенью.»
+            <cite>Анна</cite>
+        </blockquote>
+        <a class="text-link text-link--light" asp-controller="Home" asp-action="Reviews">Все отзывы</a>
+    </div>
+</section>
+
+<section class="visit">
+    <div>
+        <p class="kicker">04 — Бронь</p>
+        <h2>Выберите день.</h2>
+        <form class="visit-form" asp-controller="Home" asp-action="Booking" method="get">
+            <label>
+                Дата
+                <input name="date" type="date" />
+            </label>
+            <label>
+                Время
+                <input name="time" type="time" />
+            </label>
+            <label class="check">
+                <input name="sauna" type="checkbox" value="1" />
+                Добавить баню
+            </label>
+            <button class="book book--ink" type="submit">К бронированию</button>
+        </form>
+    </div>
+    <div class="visit__aside">
+        <p class="kicker">05 — Связь</p>
+        <a class="visit__phone" href="tel:+79001234567">+7 900 123 45 67</a>
+        <p>Лесной край, берег озера.<br>Ежедневно, 09:00–21:00.</p>
+        <a class="text-link" asp-controller="Home" asp-action="Contacts">Контакты и дорога</a>
+    </div>
+</section>

@@ -1,0 +1,44 @@
+@{
+    ViewData["Title"] = "Контакты";
+}
+
+<section class="page-hero">
+    <img src="~/images/path.jpg" alt="Тропа через лес к базе" />
+    <div class="page-hero__shade" aria-hidden="true"></div>
+    <div class="page-hero__copy">
+        <p class="kicker kicker--light">Контакты</p>
+        <h1>Доехать<br><em>и позвонить.</em></h1>
+    </div>
+</section>
+
+<section class="page">
+    <div class="sheet">
+        <div>
+            <p class="kicker">Администратор</p>
+            <a class="visit__phone" href="tel:+79001234567">+7 900 123 45 67</a>
+            <p class="note">hello@kochevnya.ru<br>Лесной край, берег озера<br>Ежедневно 09:00–21:00</p>
+            <p style="margin-top:1.6rem">
+                <a class="book book--ink" href="tel:+79001234567">Позвонить</a>
+            </p>
+            <form class="form-stack" method="get">
+                <div class="field">
+                    <label for="name">Имя</label>
+                    <input id="name" name="name" type="text" />
+                </div>
+                <div class="field">
+                    <label for="email">Email</label>
+                    <input id="email" name="email" type="email" />
+                </div>
+                <div class="field">
+                    <label for="message">Сообщение</label>
+                    <textarea id="message" name="message"></textarea>
+                </div>
+                <button class="book book--line" type="submit">Пока без отправки</button>
+            </form>
+        </div>
+        <figure class="sheet__photo">
+            <img src="~/images/cabins-forest.jpg" alt="Заезд к домикам через лес" />
+            <figcaption>Заезд через лес</figcaption>
+        </figure>
+    </div>
+</section>

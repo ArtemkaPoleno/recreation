@@ -1,0 +1,55 @@
+@{
+    ViewData["Title"] = "О базе";
+}
+
+<section class="page-hero page-hero--mid">
+    <img src="~/images/cabins-forest.jpg" alt="Домики среди высоких елей" />
+    <div class="page-hero__shade" aria-hidden="true"></div>
+    <div class="page-hero__copy">
+        <p class="kicker kicker--light">О базе</p>
+        <h1>Место,<br><em>а не программа.</em></h1>
+    </div>
+</section>
+
+<section class="page">
+    <div class="essay">
+        <div>
+            <p class="kicker">История</p>
+            <h2>Берег оставили почти как был.</h2>
+        </div>
+        <div class="stack">
+            <p class="note">«Кочевня» стоит у воды: несколько домиков, баня и тропы. Здесь нет анимации и расписания на каждый час — только тишина, стол и вид.</p>
+            <p class="note">Миссия простая: дать гостю воздух и понятный сервис. Заезд, баня, ужин — если нужно. Остальное не навязывается.</p>
+        </div>
+    </div>
+</section>
+
+<section class="page" style="padding-top:0">
+    <p class="kicker">Инфраструктура и правила</p>
+    <ol class="lines">
+        <li>
+            <span>01</span>
+            <div>
+                <h3>Домики</h3>
+                <p>Терраса, кухня, вид на воду.</p>
+            </div>
+        </li>
+        <li>
+            <span>02</span>
+            <div>
+                <h3>Баня и берег</h3>
+                <p>Сеансы по часам, мангал, лодка.</p>
+            </div>
+        </li>
+        <li>
+            <span>03</span>
+            <div>
+                <h3>Тихий режим</h3>
+                <p>После 23:00 — без музыки на улице.</p>
+            </div>
+        </li>
+    </ol>
+    <p style="margin-top:2rem">
+        <a class="book book--ink" asp-controller="Home" asp-action="Booking">Забронировать</a>
+    </p>
+</section>
