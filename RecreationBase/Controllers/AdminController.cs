@@ -267,7 +267,6 @@ public class AdminController : Controller
             FullName = string.IsNullOrWhiteSpace(u.FullName) ? u.UserName ?? "—" : u.FullName,
             Email = u.Email ?? "—",
             Phone = u.PhoneNumber ?? "не указан",
-            CreatedAt = u.CreatedAtUtc,
             IsAdmin = rolesByUser.Any(r => r.UserId == u.Id && r.Role == Roles.Admin),
             Bookings = bookingsByUser.FirstOrDefault(b => b.UserId == u.Id)?.Count ?? 0
         }).ToList();

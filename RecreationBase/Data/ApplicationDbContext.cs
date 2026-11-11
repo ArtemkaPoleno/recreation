@@ -35,12 +35,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             e.HasIndex(b => b.CheckIn);
             e.HasIndex(b => b.Status);
         });
-
-        // При первом создании базы заводим роль администратора.
-        builder.Entity<IdentityRole>().HasData(new IdentityRole
-        {
-            Name = Roles.Admin,
-            NormalizedName = Roles.Admin.ToUpperInvariant()
-        });
+        
     }
 }
