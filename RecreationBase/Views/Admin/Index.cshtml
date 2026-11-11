@@ -1,0 +1,89 @@
+@model List<BookingRecord>
+@{
+    ViewData["Title"] = "Админка";
+
+    string StatusText(BookingStatus s) => s switch
+    {
+        BookingStatus.New => "Новая",
+        BookingStatus.Confirmed => "Подтверждена",
+        BookingStatus.Cancelled => "Отменена",
+        _ => "Завершена"
+    };
+}
+
+<section class="page">
+    <p class="kicker">Администрирование</p>
+    <h1 style="font-family:var(--serif);font-weight:500;font-size:clamp(3rem,5.5vw,4.8rem);letter-spacing:-0.03em;line-height:0.95">Сводка</h1>
+
+    <partial name="_AdminNav" />
+
+    <div class="admin-stats">
+        <div class="admin-stat">
+            <span>Новые заявки</span>
+            <strong>@ViewBag.NewBookings</strong>
+        </div>
+        <div class="admin-stat">
+            <span>Подтверждённые</span>
+            <strong>@ViewBag.ConfirmedBookings</strong>
+        </div>
+        <div class="admin-stat">
+            <span>Заездов сегодня</span>
+            <strong>@ViewBag.ArrivalsToday</strong>
+        </div>
+        <div class="admin-stat">
+            <span>Всего заявок</span>
+            <strong>@ViewBag.TotalBookings</strong>
+        </div>
+        <div class="admin-stat">
+            <span>Домиков на сайте</span>
+            <strong>@ViewBag.CabinsActive</strong>
+        </div>
+        <div class="admin-stat">
+            <span>Выручка (подтв. + заверш.)</span>
+            <strong>@(((decimal)ViewBag.Revenue).ToString("N0")) ₽</strong>
+        </div>
+    </div>
+
+    <h2 style="margin-top:3.5rem;font-size:clamp(2.2rem,4vw,3.2rem)">Ближайшие заезды</h2>
+
+    @if (Model.Count == 0)
+    {
+        <p class="empty">Будущих броней пока нет.</p>
+    }
+    else
+    {
+        <div class="table-wrap">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>№</th>
+                        <th>Гость</th>
+                        <th>Домик</th>
+                        <th>Заезд</th>
+                        <th>Выезд</th>
+                        <th>Гостей</th>
+                        <th>Статус</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var b in Model)
+                    {
+                        <tr>
+                            <td>@b.Id</td>
+                            <td>@b.GuestName</td>
+                            <td>@b.Cabin?.Name</td>
+                            <td>@b.CheckIn.ToString("dd.MM.yyyy")</td>
+                            <td>@b.CheckOut.ToString("dd.MM.yyyy")</td>
+                            <td>@b.Guests</td>
+                            <td><span class="status status--@((int)b.Status)">@StatusText(b.Status)</span></td>
+                            <td class="table-actions">
+                                <a class="text-link text-link--light" asp-action="BookingDetails" asp-route-id="@b.Id">Открыть</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</section>

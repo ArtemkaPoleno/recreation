@@ -1,0 +1,88 @@
+@model BookingRecord
+@{
+    ViewData["Title"] = $"Заявка №{Model.Id} — админка";
+
+    string StatusText(BookingStatus s) => s switch
+    {
+        BookingStatus.New => "Новая",
+        BookingStatus.Confirmed => "Подтверждена",
+        BookingStatus.Cancelled => "Отменена",
+        _ => "Завершена"
+    };
+
+    var extras = new[]
+        {
+            Model.NeedSauna ? "баня" : null,
+            Model.NeedGear ? "инвентарь" : null,
+            Model.NeedFood ? "питание" : null
+        }
+        .Where(x => x != null)
+        .ToList();
+}
+
+<section class="page">
+    <p class="kicker">Администрирование / Заявки</p>
+    <h1 style="font-family:var(--serif);font-weight:500;font-size:clamp(3rem,5.5vw,4.8rem);letter-spacing:-0.03em;line-height:0.95">
+        Заявка №@Model.Id
+    </h1>
+
+    <partial name="_AdminNav" />
+
+    <div class="sheet">
+        <div>
+            <div class="profile" style="margin-top:0">
+                <div><span>Гость</span><strong>@Model.GuestName</strong></div>
+                <div><span>Телефон</span><strong><a href="tel:@Model.Phone">@Model.Phone</a></strong></div>
+                <div><span>Email</span><strong>@(string.IsNullOrEmpty(Model.Email) ? "—" : Model.Email)</strong></div>
+                <div><span>Домик</span><strong>@Model.Cabin?.Name</strong></div>
+                <div><span>Заезд — выезд</span><strong>@Model.CheckIn.ToString("dd.MM.yyyy") — @Model.CheckOut.ToString("dd.MM.yyyy") (@Model.Nights ноч.)</strong></div>
+                <div><span>Гостей</span><strong>@Model.Guests</strong></div>
+                <div><span>Дополнительно</span><strong>@(extras.Count > 0 ? string.Join(", ", extras) : "—")</strong></div>
+                <div><span>Сумма</span><strong>@Model.TotalPrice.ToString("N0") ₽</strong></div>
+                <div><span>Создана</span><strong>@Model.CreatedAtUtc.ToString("dd.MM.yyyy HH:mm") UTC</strong></div>
+                <div><span>Аккаунт</span><strong>@(Model.User?.Email ?? "гость без аккаунта")</strong></div>
+                <div><span>Статус</span><strong><span class="status status--@((int)Model.Status)">@StatusText(Model.Status)</span></strong></div>
+            </div>
+
+            @if (!string.IsNullOrWhiteSpace(Model.Comment))
+            {
+                <p class="note">Комментарий гостя: «@Model.Comment»</p>
+            }
+        </div>
+
+        <figure class="sheet__photo">
+            @if (!string.IsNullOrWhiteSpace(Model.Cabin?.ImageUrl))
+            {
+                <img src="@Model.Cabin.ImageUrl" alt="@Model.Cabin.Name" />
+                <figcaption>@Model.Cabin.Name</figcaption>
+            }
+        </figure>
+    </div>
+
+    <div class="admin-actions">
+        <form method="post" asp-action="SetStatus" class="inline-form">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="id" value="@Model.Id" />
+            <input type="hidden" name="status" value="@BookingStatus.Confirmed" />
+            <button type="submit" class="book book--ink">Подтвердить</button>
+        </form>
+        <form method="post" asp-action="SetStatus" class="inline-form">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="id" value="@Model.Id" />
+            <input type="hidden" name="status" value="@BookingStatus.Completed" />
+            <button type="submit" class="book book--line">Завершить</button>
+        </form>
+        <form method="post" asp-action="SetStatus" class="inline-form">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="id" value="@Model.Id" />
+            <input type="hidden" name="status" value="@BookingStatus.Cancelled" />
+            <button type="submit" class="book book--line">Отменить</button>
+        </form>
+        <form method="post" asp-action="DeleteBooking" onsubmit="return confirm('Удалить заявку безвозвратно?');" class="inline-form">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="id" value="@Model.Id" />
+            <button type="submit" class="book book--danger">Удалить</button>
+        </form>
+        <a class="text-link text-link--light" asp-action="Bookings">К списку заявок</a>
+    </div>
+</section>

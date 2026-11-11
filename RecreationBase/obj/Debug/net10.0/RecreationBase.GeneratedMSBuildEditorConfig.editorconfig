@@ -38,16 +38,48 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9SZWdpc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[/Users/ostasevicartemij/prog/C\#/recr/RecreationBase/Views/Admin/BookingDetails.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vQm9va2luZ0RldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/ostasevicartemij/prog/C\#/recr/RecreationBase/Views/Admin/Bookings.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vQm9va2luZ3MuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/ostasevicartemij/prog/C\#/recr/RecreationBase/Views/Admin/CabinEdit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vQ2FiaW5FZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/ostasevicartemij/prog/C\#/recr/RecreationBase/Views/Admin/Cabins.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vQ2FiaW5zLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/ostasevicartemij/prog/C\#/recr/RecreationBase/Views/Admin/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/ostasevicartemij/prog/C\#/recr/RecreationBase/Views/Admin/Users.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vVXNlcnMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/ostasevicartemij/prog/C\#/recr/RecreationBase/Views/Admin/_AdminNav.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vX0FkbWluTmF2LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/ostasevicartemij/prog/C\#/recr/RecreationBase/Views/Booking/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQm9va2luZy9JbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/ostasevicartemij/prog/C\#/recr/RecreationBase/Views/Booking/Success.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQm9va2luZy9TdWNjZXNzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [/Users/ostasevicartemij/prog/C\#/recr/RecreationBase/Views/Cabinet/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ2FiaW5ldC9JbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [/Users/ostasevicartemij/prog/C\#/recr/RecreationBase/Views/Home/About.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9BYm91dC5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[/Users/ostasevicartemij/prog/C\#/recr/RecreationBase/Views/Home/Booking.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9Cb29raW5nLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [/Users/ostasevicartemij/prog/C\#/recr/RecreationBase/Views/Home/Contacts.cshtml]

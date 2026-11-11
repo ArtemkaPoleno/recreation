@@ -213,6 +213,107 @@ namespace RecreationBase.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("RecreationBase.Models.BookingRecord", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CabinId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CheckIn")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CheckOut")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Comment")
+                        .HasMaxLength(1000)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAtUtc")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("GuestName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Guests")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("NeedFood")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("NeedGear")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("NeedSauna")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
+                        .HasMaxLength(450)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CabinId");
+
+                    b.HasIndex("CheckIn");
+
+                    b.HasIndex("Status");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Bookings");
+                });
+
+            modelBuilder.Entity("RecreationBase.Models.Cabin", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Capacity")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(80)
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("PricePerNight")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Cabins");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -262,6 +363,24 @@ namespace RecreationBase.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("RecreationBase.Models.BookingRecord", b =>
+                {
+                    b.HasOne("RecreationBase.Models.Cabin", "Cabin")
+                        .WithMany()
+                        .HasForeignKey("CabinId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("RecreationBase.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Cabin");
+
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

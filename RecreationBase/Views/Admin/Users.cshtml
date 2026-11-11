@@ -1,0 +1,67 @@
+@model List<RecreationBase.Controllers.AdminUserRow>
+@{
+    ViewData["Title"] = "Пользователи — админка";
+}
+
+<section class="page">
+    <p class="kicker">Администрирование</p>
+    <h1 style="font-family:var(--serif);font-weight:500;font-size:clamp(3rem,5.5vw,4.8rem);letter-spacing:-0.03em;line-height:0.95">Пользователи</h1>
+
+    <partial name="_AdminNav" />
+
+    <form method="get" asp-action="Users" class="admin-filters">
+        <div class="field">
+            <label for="q">Поиск</label>
+            <input id="q" name="q" type="text" value="@ViewBag.Query" placeholder="имя, email, телефон" />
+        </div>
+        <button class="book book--ink" type="submit">Найти</button>
+        <a class="text-link text-link--light" asp-action="Users">Сбросить</a>
+    </form>
+
+    @if (Model.Count == 0)
+    {
+        <p class="empty">Пользователей не найдено.</p>
+    }
+    else
+    {
+        <div class="table-wrap">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Имя</th>
+                        <th>Email</th>
+                        <th>Телефон</th>
+                        <th>Заявок</th>
+                        <th>Роль</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var u in Model)
+                    {
+                        <tr>
+                            <td>@u.FullName</td>
+                            <td>@u.Email</td>
+                            <td>@u.Phone</td>
+                            <td>@u.Bookings</td>
+                            <td>
+                                <span class="status @(u.IsAdmin ? "status--on" : "status--off")">
+                                    @(u.IsAdmin ? "админ" : "гость")
+                                </span>
+                            </td>
+                            <td class="table-actions">
+                                <form method="post" asp-action="ToggleAdmin" class="inline-form">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="userId" value="@u.Id" />
+                                    <button type="submit" class="table-link">
+                                        @(u.IsAdmin ? "Снять админа" : "Сделать админом")
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</section>

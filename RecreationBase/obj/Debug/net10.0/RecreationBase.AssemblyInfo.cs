@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("RecreationBase")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+451de654ecff9af9507f4e32febbdb04d31acdc9")]
 [assembly: System.Reflection.AssemblyProductAttribute("RecreationBase")]
 [assembly: System.Reflection.AssemblyTitleAttribute("RecreationBase")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

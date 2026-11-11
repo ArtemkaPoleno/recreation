@@ -1,0 +1,61 @@
+@model Cabin
+@{
+    ViewData["Title"] = Model.Id == 0 ? "Новый домик — админка" : $"«{Model.Name}» — админка";
+}
+
+<section class="page">
+    <p class="kicker">Администрирование / Домики</p>
+    <h1 style="font-family:var(--serif);font-weight:500;font-size:clamp(3rem,5.5vw,4.8rem);letter-spacing:-0.03em;line-height:0.95">
+        @(Model.Id == 0 ? "Новый домик" : "Домик")
+    </h1>
+
+    <partial name="_AdminNav" />
+
+    <form method="post" asp-action="CabinEdit" class="form-stack" style="max-width:32rem">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Id" />
+        <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+
+        <div class="field">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" />
+            <span asp-validation-for="Name" class="field-validation-error"></span>
+        </div>
+
+        <div class="field">
+            <label asp-for="Description"></label>
+            <textarea asp-for="Description" rows="3"></textarea>
+            <span asp-validation-for="Description" class="field-validation-error"></span>
+        </div>
+
+        <div class="booking-dates">
+            <div class="field">
+                <label asp-for="Capacity"></label>
+                <input asp-for="Capacity" type="number" min="1" max="30" />
+                <span asp-validation-for="Capacity" class="field-validation-error"></span>
+            </div>
+            <div class="field">
+                <label asp-for="PricePerNight"></label>
+                <input asp-for="PricePerNight" type="number" min="0" step="100" />
+                <span asp-validation-for="PricePerNight" class="field-validation-error"></span>
+            </div>
+        </div>
+
+        <div class="field">
+            <label asp-for="ImageUrl"></label>
+            <input asp-for="ImageUrl" placeholder="/images/cabins.jpg или https://..." />
+            <span asp-validation-for="ImageUrl" class="field-validation-error"></span>
+        </div>
+
+        <label class="field-check">
+            <input asp-for="IsActive" /> Показывать на сайте
+        </label>
+
+        <button class="book book--ink" type="submit">Сохранить</button>
+        <a class="text-link text-link--light" asp-action="Cabins">К списку домиков</a>
+    </form>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

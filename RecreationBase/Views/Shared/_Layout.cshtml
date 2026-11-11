@@ -22,10 +22,14 @@
             <nav class="site-nav">
                 <a class="@NavClass("Home", "About")" asp-controller="Home" asp-action="About">О базе</a>
                 <a class="@NavClass("Home", "Services")" asp-controller="Home" asp-action="Services">Услуги</a>
-                <a class="@NavClass("Home", "Booking")" asp-controller="Home" asp-action="Booking">Бронирование</a>
+                <a class="@NavClass("Booking", "Index")" asp-controller="Booking" asp-action="Index">Бронирование</a>
                 <a class="@NavClass("Home", "Reviews")" asp-controller="Home" asp-action="Reviews">Отзывы</a>
                 <a class="@NavClass("Home", "Contacts")" asp-controller="Home" asp-action="Contacts">Контакты</a>
                 <a class="@(controller == "Cabinet" ? "is-active" : "")" asp-controller="Cabinet" asp-action="Index">Кабинет</a>
+                @if (User.IsInRole(Roles.Admin))
+                {
+                    <a class="@(controller == "Admin" ? "is-active" : "")" asp-controller="Admin" asp-action="Index">Админка</a>
+                }
             </nav>
 
             <div class="header-side">
@@ -59,7 +63,7 @@
                 <p class="footer-title">Разделы</p>
                 <a asp-controller="Home" asp-action="About">О базе</a>
                 <a asp-controller="Home" asp-action="Services">Услуги</a>
-                <a asp-controller="Home" asp-action="Booking">Бронирование</a>
+                <a asp-controller="Booking" asp-action="Index">Бронирование</a>
                 <a asp-controller="Home" asp-action="Reviews">Отзывы</a>
             </div>
             <div>
